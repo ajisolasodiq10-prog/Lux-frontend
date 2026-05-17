@@ -1,0 +1,95 @@
+/* ============================================
+   orders.css — Orders Page Styles
+   ============================================ */
+
+.orders-page { background: var(--light-gray); }
+
+.orders-list {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* ── Order Card ─────────────────────────────── */
+.order-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.order-card-header {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-gray);
+}
+
+.order-id {
+    font-size: var(--font-size-xs);
+    color: #aaa;
+    margin-bottom: 2px;
+}
+.order-id strong { color: var(--dark-text); font-size: var(--font-size-sm); }
+
+.order-date {
+    font-size: var(--font-size-xs);
+    color: #aaa;
+    margin-top: 2px;
+}
+
+.order-items-preview {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    gap: var(--spacing-sm);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.order-items-preview::-webkit-scrollbar { display: none; }
+
+.order-item-thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--light-gray);
+    border: 1px solid var(--border-gray);
+}
+
+.order-more-items {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    background: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: #777;
+    flex-shrink: 0;
+    border: 1px solid var(--border-gray);
+}
+
+.order-card-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-gray);
+}
+
+.order-total {
+    font-size: var(--font-size-base);
+    font-weight: 800;
+    color: var(--dark-text);
+}
+
+.order-items-count {
+    font-size: var(--font-size-xs);
+    color: #aaa;
+    margin-top: 2px;
+}

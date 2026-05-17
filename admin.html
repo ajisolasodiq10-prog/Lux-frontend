@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>LuxStore — Admin</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-page">
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card green">
+      <div class="stat-label">Products</div>
+      <div class="stat-value" id="stat-products">—</div>
+      <div class="stat-icon">🛍️</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-label">Orders</div>
+      <div class="stat-value" id="stat-orders">—</div>
+      <div class="stat-icon">📦</div>
+    </div>
+    <div class="stat-card pink">
+      <div class="stat-label">Revenue</div>
+      <div class="stat-value" id="stat-revenue" style="font-size:18px">—</div>
+      <div class="stat-icon">💰</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-label">Users</div>
+      <div class="stat-value" id="stat-users">—</div>
+      <div class="stat-icon">👥</div>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="products">Products</button>
+    <button class="tab-btn" data-tab="orders">Orders</button>
+    <button class="tab-btn" data-tab="users">Users</button>
+  </div>
+
+  <!-- Products Tab -->
+  <div class="tab-panel active" id="tab-products">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Img</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="products-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Orders Tab -->
+  <div class="tab-panel" id="tab-orders">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Update</th>
+          </tr>
+        </thead>
+        <tbody id="orders-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Users Tab -->
+  <div class="tab-panel" id="tab-users">
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FAB: Add Product -->
+  <button class="fab-btn" id="fab-add-product" title="Add Product">+</button>
+
+  <!-- Product Modal -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h3 id="product-modal-title">Add Product</h3>
+        <button class="modal-close" id="close-product-modal">✕</button>
+      </div>
+
+      <div id="product-form-alert" class="alert"></div>
+
+      <form id="product-form" novalidate>
+        <div class="form-group">
+          <label class="form-label">Name *</label>
+          <input type="text" id="p-name" class="form-control" placeholder="Product name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description *</label>
+          <textarea id="p-description" class="form-control" rows="3" placeholder="Product description"></textarea>
+        </div>
+        <div class="product-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Price ($) *</label>
+              <input type="number" id="p-price" class="form-control" placeholder="0.00" min="0" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Stock *</label>
+              <input type="number" id="p-stock" class="form-control" placeholder="0" min="0" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select id="p-category" class="form-control">
+            <option value="">Select category…</option>
+            <option>Electronics</option>
+            <option>Fashion</option>
+            <option>Food</option>
+            <option>Books</option>
+            <option>Beauty</option>
+            <option>Sports</option>
+            <option>Home</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Image URL</label>
+          <input type="url" id="p-image" class="form-control" placeholder="https://…" />
+        </div>
+        <button type="button" class="btn btn-primary" id="save-product-btn">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

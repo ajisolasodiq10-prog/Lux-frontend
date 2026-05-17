@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>LuxStore — Create Account</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-page">
+
+  <!-- Header -->
+  <div class="auth-header">
+    <div class="auth-logo">Lux<span>Store</span></div>
+    <p class="auth-tagline">Join thousands of happy shoppers</p>
+  </div>
+
+  <!-- Form Body -->
+  <div class="auth-body">
+    <h1 class="auth-title">Create Account 🎉</h1>
+    <p class="auth-subtitle">It's free and takes less than a minute</p>
+
+    <div id="register-alert" class="alert"></div>
+
+    <form id="register-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="name">Full Name</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          placeholder="Jane Smith"
+          autocomplete="name"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="At least 6 characters"
+          autocomplete="new-password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirm-password">Confirm Password</label>
+        <input
+          type="password"
+          id="confirm-password"
+          class="form-control"
+          placeholder="Repeat your password"
+          autocomplete="new-password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="register-btn">
+        Create Account
+      </button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="auth-footer">
+    Already have an account? <a href="/login.html">Sign in</a>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/register.js"></script>
+</body>
+</html>

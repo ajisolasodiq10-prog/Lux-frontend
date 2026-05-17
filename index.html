@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>LuxStore — Shop</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/products.css" />
+</head>
+<body>
+
+  <!-- ── Hero Banner ── -->
+  <div class="hero-banner">
+    <h1>Everything<br/>You Need 🛍️</h1>
+    <p>Quality products delivered fast to your door.</p>
+    <button class="btn" onclick="document.getElementById('search-input').focus()">
+      Search Now
+    </button>
+  </div>
+
+  <!-- ── Categories ── -->
+  <div class="categories-section">
+    <div class="categories-scroll" id="categories-scroll"></div>
+  </div>
+
+  <!-- ── Products ── -->
+  <div class="products-section">
+    <div class="section-header">
+      <h2>Products</h2>
+    </div>
+    <p class="search-results-header" id="search-results-header" style="display:none"></p>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <!-- Scripts — order matters -->
+  <script src="/js/auth.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/products.js"></script>
+</body>
+</html>

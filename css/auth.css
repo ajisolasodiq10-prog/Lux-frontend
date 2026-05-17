@@ -1,0 +1,67 @@
+/* ============================================
+   auth.css — Login & Register Page Styles
+   ============================================ */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    /* Override body padding for auth pages */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* ── Auth Header ────────────────────────────── */
+.auth-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: var(--spacing-3xl) var(--spacing-xl) var(--spacing-2xl);
+    text-align: center;
+    color: var(--white);
+    border-radius: 0 0 40px 40px;
+}
+
+.auth-logo {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: var(--spacing-sm);
+}
+.auth-logo span { color: var(--accent-yellow); }
+
+.auth-tagline {
+    font-size: var(--font-size-sm);
+    opacity: 0.85;
+}
+
+/* ── Auth Body ──────────────────────────────── */
+.auth-body {
+    flex: 1;
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    background: var(--white);
+}
+
+.auth-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    margin-bottom: var(--spacing-sm);
+}
+
+.auth-subtitle {
+    font-size: var(--font-size-sm);
+    color: #777;
+    margin-bottom: var(--spacing-2xl);
+}
+
+/* ── Auth Footer ────────────────────────────── */
+.auth-footer {
+    text-align: center;
+    padding: var(--spacing-xl);
+    font-size: var(--font-size-sm);
+    color: #777;
+}
+
+.auth-footer a {
+    color: var(--secondary-color);
+    font-weight: 700;
+}

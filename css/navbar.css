@@ -1,0 +1,161 @@
+/* ============================================
+   navbar.css — Top & Bottom Navigation
+   ============================================ */
+
+/* ── Top Navbar ─────────────────────────────── */
+.top-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--top-nav-height);
+    background: var(--white);
+    border-bottom: 1px solid var(--border-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-lg);
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+.top-nav-logo {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    color: var(--dark-text);
+    letter-spacing: -0.5px;
+}
+.top-nav-logo span { color: var(--secondary-color); }
+
+.top-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.top-nav-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    position: relative;
+    transition: background var(--transition-fast);
+}
+.top-nav-icon-btn:active { background: var(--border-gray); }
+
+/* Cart badge on top nav */
+.nav-cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: var(--accent-pink);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    border: 2px solid var(--white);
+}
+
+/* Search bar in top nav (shown on index page) */
+.top-nav-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--light-gray);
+    border-radius: var(--radius-full);
+    padding: 0 var(--spacing-md);
+    margin: 0 var(--spacing-sm);
+    height: 40px;
+    gap: var(--spacing-sm);
+    border: 2px solid transparent;
+    transition: border-color var(--transition-fast);
+}
+.top-nav-search:focus-within { border-color: var(--secondary-color); }
+.top-nav-search input {
+    flex: 1;
+    background: transparent;
+    font-size: var(--font-size-sm);
+    color: var(--dark-text);
+}
+.top-nav-search input::placeholder { color: #aaa; }
+.top-nav-search .search-icon { font-size: 16px; color: #aaa; }
+
+/* Page title style (for inner pages) */
+.top-nav-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+}
+
+/* ── Bottom Navbar ──────────────────────────── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: var(--bottom-nav-height);
+    background: var(--white);
+    border-top: 1px solid var(--border-gray);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 1000;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    color: #aaa;
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    transition: color var(--transition-fast);
+    position: relative;
+    cursor: pointer;
+}
+
+.bottom-nav-item .nav-icon { font-size: 22px; line-height: 1; }
+.bottom-nav-item span { font-size: 10px; }
+
+.bottom-nav-item.active { color: var(--secondary-color); }
+
+/* Active indicator dot */
+.bottom-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+}
+
+/* Cart badge on bottom nav */
+.bottom-nav-badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 20px);
+    background: var(--accent-pink);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 700;
+    min-width: 16px;
+    height: 16px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3px;
+    border: 2px solid var(--white);
+}
