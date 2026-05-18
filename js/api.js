@@ -4,7 +4,8 @@
 // No other file talks to the backend directly
 // ============================================================
 
-const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://luxstore.onrender.com/api";
 
 // ── Core Request Function ─────────────────────────────────────
 // Every API call goes through this one function
