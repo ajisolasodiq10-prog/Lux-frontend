@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <title>LuxStore — My Profile</title>
+        <link rel="stylesheet" href="/css/style.css" />
+        <link rel="stylesheet" href="/css/navbar.css" />
+        <link rel="stylesheet" href="/css/me.css" />
+    </head>
+
+    <body class="me-page">
+
+        <!-- Profile Header -->
+        <div class="profile-header-card">
+            <div class="profile-avatar" id="profile-avatar">👤</div>
+            <div class="profile-name" id="profile-name">Loading…</div>
+            <div class="profile-email" id="profile-email"></div>
+            <div class="profile-role-badge" id="profile-role"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="profile-stats">
+            <div class="profile-stat-card">
+                <div class="profile-stat-value" id="stat-orders">—</div>
+                <div class="profile-stat-label">Total Orders</div>
+            </div>
+            <div class="profile-stat-card">
+                <div class="profile-stat-value" id="stat-spent">—</div>
+                <div class="profile-stat-label">Total Spent</div>
+            </div>
+        </div>
+
+        <!-- Menu -->
+        <div class="profile-menu">
+            <a href="/orders.html" class="profile-menu-item">
+                <div class="profile-menu-icon green">📦</div>
+                <span class="profile-menu-label">My Orders</span>
+                <span class="profile-menu-arrow">›</span>
+            </a>
+            <a href="/cart.html" class="profile-menu-item">
+                <div class="profile-menu-icon blue">🛒</div>
+                <span class="profile-menu-label">My Cart</span>
+                <span class="profile-menu-arrow">›</span>
+            </a>
+            <a href="/index.html" class="profile-menu-item">
+                <div class="profile-menu-icon orange">🛍️</div>
+                <span class="profile-menu-label">Continue Shopping</span>
+                <span class="profile-menu-arrow">›</span>
+            </a>
+            <!-- Admin link — only shown to admins via JS -->
+            <a href="/admin.html" class="profile-menu-item" id="admin-menu-item" style="display:none">
+                <div class="profile-menu-icon purple">⚙️</div>
+                <span class="profile-menu-label">Admin Dashboard</span>
+                <span class="profile-menu-arrow">›</span>
+            </a>
+            <div class="profile-menu-item logout" id="logout-btn">
+                <div class="profile-menu-icon red">🚪</div>
+                <span class="profile-menu-label">Logout</span>
+                <span class="profile-menu-arrow">›</span>
+            </div>
+        </div>
+
+        <!-- Member since -->
+        <div class="profile-since" id="profile-since"></div>
+
+        <script src="/js/auth.js"></script>
+        <script src="/js/api.js"></script>
+        <script src="/js/navbar.js"></script>
+        <script src="/js/me.js"></script>
+    </body>
+
+</html>

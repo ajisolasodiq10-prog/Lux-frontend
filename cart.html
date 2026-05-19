@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>LuxStore — Cart</title>
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="stylesheet" href="/css/navbar.css" />
-  <link rel="stylesheet" href="/css/cart.css" />
-</head>
-<body class="cart-page">
 
-  <!-- Cart Items -->
-  <div class="cart-items-list" id="cart-items-list"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>LuxStore — Cart</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/navbar.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
+  </head>
 
-  <!-- Order Summary -->
-  <div class="order-summary" id="order-summary" style="display:none">
-    <h3>Order Summary</h3>
-    <div class="summary-row">
-      <span id="summary-items-count">0 items</span>
+  <body class="cart-page">
+
+    <!-- Cart Items -->
+    <div class="cart-items-list" id="cart-items-list"></div>
+
+    <!-- Order Summary -->
+    <div class="order-summary" id="order-summary" style="display:none">
+      <h3>Order Summary</h3>
+      <div class="summary-row">
+        <span id="summary-items-count">0 items</span>
+      </div>
+      <div class="divider"></div>
+      <div class="summary-row total">
+        <span>Total</span>
+        <span id="summary-total">$0.00</span>
+      </div>
     </div>
-    <div class="divider"></div>
-    <div class="summary-row total">
-      <span>Total</span>
-      <span id="summary-total">$0.00</span>
+
+    <!-- Checkout Button -->
+    <div class="checkout-btn-wrap" id="checkout-btn-wrap" style="display:none">
+      <button class="btn btn-primary" id="checkout-btn">
+        Checkout
+      </button>
     </div>
-  </div>
 
-  <!-- Checkout Button -->
-  <div class="checkout-btn-wrap" id="checkout-btn-wrap" style="display:none">
-    <button class="btn btn-primary" id="checkout-btn">
-      Checkout
-    </button>
-  </div>
+    <script src="/js/auth.js"></script>
+    <script src="/js/api.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script src="/js/cart.js"></script>
+  </body>
 
-  <script src="/js/auth.js"></script>
-  <script src="/js/api.js"></script>
-  <script src="/js/navbar.js"></script>
-  <script src="/js/cart.js"></script>
-</body>
 </html>

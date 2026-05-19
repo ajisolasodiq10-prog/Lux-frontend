@@ -1,22 +1,17 @@
 // ============================================================
-// navbar.js — Builds and injects top + bottom navbar
-// Load this on every HTML page after auth.js and api.js
+// navbar.js — Top + Bottom navbar, Toast, Utilities
+// Load on every page after auth.js and api.js
 // ============================================================
 
 const navbar = {
-  // Which page is currently active (used to highlight bottom nav)
   currentPage: window.location.pathname,
 
-  // ── Build & inject the top navbar ─────────────────────────
+  // ── Top Navbar ─────────────────────────────────────────────
   renderTop(options = {}) {
     const { showSearch = false, title = "" } = options;
-    const user = auth.getUser();
 
-    let leftSide = `
-      <a href="/index.html" class="top-nav-logo">Lux<span>Store</span></a>
-    `;
-
-    // Inner pages show a back button and page title instead of logo
+    // Left side — logo or back button
+    let leftSide = `<a href="/index.html" class="top-nav-logo">Lux<span>Store</span></a>`;
     if (title) {
       leftSide = `
         <button class="top-nav-icon-btn" onclick="history.back()">←</button>
@@ -24,30 +19,33 @@ const navbar = {
       `;
     }
 
+    // Right side — changes based on login state
     let rightSide = "";
     if (auth.isLoggedIn()) {
+      // Cart icon always shown when logged in
       rightSide = `
-        <a href="/cart.html" class="top-nav-icon-btn" id="top-cart-btn">
+        <a href="/cart.html" class="top-nav-icon-btn" id="top-cart-btn" title="Cart">
           🛒
           <span class="nav-cart-badge" id="top-cart-badge" style="display:none">0</span>
         </a>
       `;
+      // Admin icon only for admin/superadmin
       if (auth.isAdmin()) {
-        rightSide += `<a href="/admin.html" class="top-nav-icon-btn">⚙️</a>`;
+        rightSide += `<a href="/admin.html" class="top-nav-icon-btn" title="Admin Panel">⚙️</a>`;
       }
     } else {
-      rightSide = `<a href="/login.html" class="btn btn-sm btn-primary" style="width:auto">Login</a>`;
+      // Not logged in — show Login and Register
+      rightSide = `
+        <a href="/login.html" class="btn btn-sm btn-outline" style="width:auto">Login</a>
+        <a href="/register.html" class="btn btn-sm btn-primary" style="width:auto;margin-left:6px">Register</a>
+      `;
     }
 
+    // Search bar (only on index page)
     const searchBar = showSearch ? `
       <div class="top-nav-search" id="top-search-bar">
         <span class="search-icon">🔍</span>
-        <input
-          type="text"
-          id="search-input"
-          placeholder="Search products..."
-          autocomplete="off"
-        />
+        <input type="text" id="search-input" placeholder="Search products..." autocomplete="off" />
       </div>
     ` : "";
 
@@ -55,33 +53,25 @@ const navbar = {
     nav.className = "top-nav";
 
     if (showSearch) {
-      nav.innerHTML = `
-        ${leftSide}
-        ${searchBar}
-        ${rightSide}
-      `;
+      nav.innerHTML = `${leftSide}${searchBar}<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">${rightSide}</div>`;
     } else {
-      nav.innerHTML = `
-        ${leftSide}
-        <div style="display:flex;align-items:center;gap:8px;">${rightSide}</div>
-      `;
+      nav.innerHTML = `${leftSide}<div style="display:flex;align-items:center;gap:6px;">${rightSide}</div>`;
     }
 
     document.body.insertBefore(nav, document.body.firstChild);
 
-    // Update cart badge count
-    if (auth.isLoggedIn()) {
-      this.updateCartBadge();
-    }
+    // Update cart badge after nav is injected
+    if (auth.isLoggedIn()) this.updateCartBadge();
   },
 
-  // ── Build & inject the bottom navbar ──────────────────────
+  // ── Bottom Navbar ───────────────────────────────────────────
   renderBottom() {
     const page = this.currentPage;
 
-    const isHome   = page.includes("index")  || page === "/";
-    const isCart   = page.includes("cart");
+    const isHome   = page === "/" || page.includes("index");
     const isOrders = page.includes("orders");
+    const isCart   = page.includes("cart");
+    const isMe     = page.includes("me");
     const isAdmin  = page.includes("admin");
 
     const nav = document.createElement("nav");
@@ -93,46 +83,53 @@ const navbar = {
         <span class="nav-icon">🏠</span>
         <span>Home</span>
       </a>
-      <a href="/index.html?search=1" class="bottom-nav-item" id="bottom-search-btn">
+      <a href="/index.html?focus=search" class="bottom-nav-item" id="bottom-search-btn">
         <span class="nav-icon">🔍</span>
         <span>Search</span>
       </a>
-      <a href="/cart.html" class="bottom-nav-item ${isCart ? "active" : ""}">
+      <a href="${auth.isLoggedIn() ? "/orders.html" : "/login.html"}" class="bottom-nav-item ${isOrders ? "active" : ""}">
+        <span class="nav-icon">📦</span>
+        <span>Orders</span>
+      </a>
+      <a href="${auth.isLoggedIn() ? "/cart.html" : "/login.html"}" class="bottom-nav-item ${isCart ? "active" : ""}">
         <span class="nav-icon">🛒</span>
         <span>Cart</span>
         <span class="bottom-nav-badge" id="bottom-cart-badge" style="display:none">0</span>
       </a>
-      <a href="/orders.html" class="bottom-nav-item ${isOrders ? "active" : ""}">
-        <span class="nav-icon">📦</span>
-        <span>Orders</span>
+      <a href="${auth.isLoggedIn() ? "/me.html" : "/login.html"}" class="bottom-nav-item ${isMe ? "active" : ""}">
+        <span class="nav-icon">👤</span>
+        <span>Me</span>
       </a>
-      ${auth.isAdmin() ? `
-        <a href="/admin.html" class="bottom-nav-item ${isAdmin ? "active" : ""}">
-          <span class="nav-icon">⚙️</span>
-          <span>Admin</span>
-        </a>
-      ` : ""}
     `;
 
     document.body.appendChild(nav);
+
+    // Search tab focuses the search input on index page
+    const searchBtn = document.getElementById("bottom-search-btn");
+    if (searchBtn) {
+      searchBtn.addEventListener("click", (e) => {
+        if (page === "/" || page.includes("index")) {
+          e.preventDefault();
+          const input = document.getElementById("search-input");
+          if (input) {
+            input.focus();
+            input.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+        // Otherwise it navigates to index with focus=search param
+      });
+    }
   },
 
-  // ── Fetch cart count and update both badges ────────────────
+  // ── Cart Badge ──────────────────────────────────────────────
   async updateCartBadge() {
     if (!auth.isLoggedIn()) return;
-
     try {
       const res = await api.getCart();
       if (!res || !res.ok) return;
-
-      const count = (res.data.cart?.items || []).reduce(
-        (sum, item) => sum + item.quantity, 0
-      );
-
-      const topBadge    = document.getElementById("top-cart-badge");
-      const bottomBadge = document.getElementById("bottom-cart-badge");
-
-      [topBadge, bottomBadge].forEach(badge => {
+      const count = (res.data.cart?.items || []).reduce((sum, item) => sum + item.quantity, 0);
+      ["top-cart-badge", "bottom-cart-badge"].forEach(id => {
+        const badge = document.getElementById(id);
         if (!badge) return;
         if (count > 0) {
           badge.textContent = count > 99 ? "99+" : count;
@@ -142,18 +139,18 @@ const navbar = {
         }
       });
     } catch {
-      // Silently fail — badge stays hidden
+      // Silently fail
     }
   },
 
-  // ── Shorthand: render both navbars at once ─────────────────
+  // ── Render both navbars ─────────────────────────────────────
   render(options = {}) {
     this.renderTop(options);
     this.renderBottom();
   },
 };
 
-// ── Toast Notification System ─────────────────────────────────
+// ── Toast System ──────────────────────────────────────────────
 const toast = {
   container: null,
 
@@ -166,18 +163,14 @@ const toast = {
 
   show(message, type = "default", duration = 3000) {
     this.init();
-
     const t = document.createElement("div");
     t.className = `toast ${type}`;
-
     const icons = { success: "✓", error: "✕", default: "ℹ" };
     t.textContent = `${icons[type] || "ℹ"} ${message}`;
-
     this.container.appendChild(t);
-
     setTimeout(() => {
       t.classList.add("fade-out");
-      t.addEventListener("animationend", () => t.remove());
+      t.addEventListener("animationend", () => t.remove(), { once: true });
     }, duration);
   },
 
@@ -186,24 +179,22 @@ const toast = {
   info:    (msg) => toast.show(msg, "default"),
 };
 
-// ── Utility: Format price ─────────────────────────────────────
+// ── Utilities ─────────────────────────────────────────────────
+
+// Naira currency formatter
 function formatPrice(amount) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  return "₦" + new Intl.NumberFormat("en-NG", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 }
 
-// ── Utility: Format date ──────────────────────────────────────
 function formatDate(dateString) {
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+  return new Intl.DateTimeFormat("en-NG", {
+    year: "numeric", month: "short", day: "numeric",
   }).format(new Date(dateString));
 }
 
-// ── Utility: Debounce ─────────────────────────────────────────
 function debounce(fn, delay = 400) {
   let timer;
   return (...args) => {
@@ -212,7 +203,6 @@ function debounce(fn, delay = 400) {
   };
 }
 
-// ── Utility: Escape HTML to prevent XSS ──────────────────────
 function escHtml(str) {
   if (!str) return "";
   return String(str)

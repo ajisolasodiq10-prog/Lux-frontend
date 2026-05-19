@@ -1,6 +1,6 @@
 // ============================================================
 // products.js — Shop page logic
-// Loads products, handles search, category filter, add to cart
+// Products load without login. Actions require login.
 // ============================================================
 
 const CATEGORIES = [
@@ -14,19 +14,20 @@ const CATEGORIES = [
   { label: "Home",        icon: "🏠" },
 ];
 
-let allProducts   = [];
+let allProducts    = [];
 let activeCategory = "All";
 
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
+  // Render navbar — products page does NOT require login
   navbar.render({ showSearch: true });
   renderCategories();
   await loadProducts();
   initSearch();
-  checkAutoSearch();
+  checkAutoFocus();
 });
 
-// ── Load all products from backend ────────────────────────────
+// ── Load products (no login required) ─────────────────────────
 async function loadProducts() {
   const grid = document.getElementById("products-grid");
   grid.innerHTML = renderSkeletons();
@@ -49,16 +50,13 @@ async function loadProducts() {
   renderProducts(allProducts);
 }
 
-// ── Render category chips ─────────────────────────────────────
+// ── Render categories ─────────────────────────────────────────
 function renderCategories() {
   const container = document.getElementById("categories-scroll");
   if (!container) return;
 
   container.innerHTML = CATEGORIES.map(cat => `
-    <div
-      class="category-chip ${cat.label === activeCategory ? "active" : ""}"
-      data-category="${cat.label}"
-    >
+    <div class="category-chip ${cat.label === activeCategory ? "active" : ""}" data-category="${cat.label}">
       <div class="category-chip-icon">${cat.icon}</div>
       <span class="category-chip-label">${cat.label}</span>
     </div>
@@ -67,34 +65,44 @@ function renderCategories() {
   container.querySelectorAll(".category-chip").forEach(chip => {
     chip.addEventListener("click", () => {
       activeCategory = chip.dataset.category;
-      // Update active state visually
       container.querySelectorAll(".category-chip").forEach(c => c.classList.remove("active"));
       chip.classList.add("active");
-      // Filter products
+      // Clear search input when selecting a category
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) searchInput.value = "";
       filterByCategory();
     });
   });
 }
 
-// ── Filter displayed products by category ────────────────────
+// ── Filter by category ────────────────────────────────────────
 function filterByCategory() {
+  const header = document.getElementById("search-results-header");
+  if (header) header.style.display = "none";
+
   if (activeCategory === "All") {
     renderProducts(allProducts);
     return;
   }
+
   const filtered = allProducts.filter(p =>
-    p.category.toLowerCase().includes(activeCategory.toLowerCase())
+    p.category.toLowerCase() === activeCategory.toLowerCase()
   );
-  renderProducts(filtered);
+  renderProducts(filtered, `${activeCategory} (${filtered.length})`);
 }
 
-// ── Render product cards into the grid ───────────────────────
-function renderProducts(products) {
-  const grid = document.getElementById("products-grid");
+// ── Render product grid ───────────────────────────────────────
+function renderProducts(products, headerText = null) {
+  const grid   = document.getElementById("products-grid");
   const header = document.getElementById("search-results-header");
 
   if (header) {
-    header.style.display = "none";
+    if (headerText) {
+      header.style.display = "block";
+      header.innerHTML = headerText;
+    } else {
+      header.style.display = "none";
+    }
   }
 
   if (!products || products.length === 0) {
@@ -110,7 +118,6 @@ function renderProducts(products) {
 
   grid.innerHTML = products.map(p => buildProductCard(p)).join("");
 
-  // Attach add-to-cart buttons
   grid.querySelectorAll(".product-add-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -119,17 +126,12 @@ function renderProducts(products) {
   });
 }
 
-// ── Build one product card HTML ───────────────────────────────
+// ── Build product card ────────────────────────────────────────
 function buildProductCard(product) {
   const inStock  = product.stock > 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
 
-  const stockText = product.stock === 0
-    ? "Out of stock"
-    : lowStock
-    ? `Only ${product.stock} left`
-    : `${product.stock} in stock`;
-
+  const stockText  = product.stock === 0 ? "Out of stock" : lowStock ? `Only ${product.stock} left` : `${product.stock} in stock`;
   const stockClass = product.stock === 0 ? "out" : lowStock ? "low" : "";
 
   return `
@@ -161,8 +163,9 @@ function buildProductCard(product) {
   `;
 }
 
-// ── Handle Add to Cart click ──────────────────────────────────
+// ── Add to cart — requires login ──────────────────────────────
 async function handleAddToCart(productId, productName) {
+  // Require login before any cart action
   if (!auth.isLoggedIn()) {
     toast.info("Please log in to add items to your cart");
     setTimeout(() => window.location.href = "/login.html", 1200);
@@ -170,14 +173,10 @@ async function handleAddToCart(productId, productName) {
   }
 
   const btn = document.querySelector(`.product-add-btn[data-id="${productId}"]`);
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = "✓";
-  }
+  if (btn) { btn.disabled = true; btn.textContent = "✓"; }
 
   try {
     const res = await api.addToCart(productId, 1);
-
     if (res && res.ok) {
       toast.success(`"${productName}" added to cart`);
       navbar.updateCartBadge();
@@ -188,10 +187,7 @@ async function handleAddToCart(productId, productName) {
     toast.error("Network error. Please try again.");
   } finally {
     if (btn) {
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = "+";
-      }, 1000);
+      setTimeout(() => { btn.disabled = false; btn.textContent = "+"; }, 1000);
     }
   }
 }
@@ -205,6 +201,13 @@ function initSearch() {
     const grid   = document.getElementById("products-grid");
     const header = document.getElementById("search-results-header");
 
+    // Reset category to All when searching
+    if (term.trim()) {
+      activeCategory = "All";
+      document.querySelectorAll(".category-chip").forEach(c => c.classList.remove("active"));
+      document.querySelector('.category-chip[data-category="All"]')?.classList.add("active");
+    }
+
     if (!term.trim()) {
       if (header) header.style.display = "none";
       filterByCategory();
@@ -215,14 +218,8 @@ function initSearch() {
 
     const res = await api.searchProducts(term.trim());
 
-    if (header) {
-      header.style.display = "block";
-      header.innerHTML = res?.ok
-        ? `<strong>${res.data.count}</strong> result${res.data.count !== 1 ? "s" : ""} for "<strong>${escHtml(term)}</strong>"`
-        : `No results for "<strong>${escHtml(term)}</strong>"`;
-    }
-
     if (!res || !res.ok) {
+      if (header) { header.style.display = "block"; header.textContent = `No results for "${term}"`; }
       grid.innerHTML = `
         <div class="empty-state" style="grid-column:1/-1">
           <div class="empty-icon">🔍</div>
@@ -233,26 +230,37 @@ function initSearch() {
       return;
     }
 
-    renderProducts(res.data.products || []);
+    const products = res.data.products || [];
+    if (header) {
+      header.style.display = "block";
+      header.innerHTML = `<strong>${products.length}</strong> result${products.length !== 1 ? "s" : ""} for "<strong>${escHtml(term)}</strong>"`;
+    }
+
+    renderProducts(products);
   }, 450);
 
   input.addEventListener("input", (e) => doSearch(e.target.value));
 }
 
-// ── If user clicked Search from another page ──────────────────
-function checkAutoSearch() {
+// ── Auto focus search if coming from bottom nav search tab ────
+function checkAutoFocus() {
   const params = new URLSearchParams(window.location.search);
+  if (params.get("focus") === "search") {
+    const input = document.getElementById("search-input");
+    if (input) {
+      input.focus();
+      input.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+  // Pre-fill search if q param exists
   const q = params.get("q");
   if (q) {
     const input = document.getElementById("search-input");
-    if (input) {
-      input.value = q;
-      input.dispatchEvent(new Event("input"));
-    }
+    if (input) { input.value = q; input.dispatchEvent(new Event("input")); }
   }
 }
 
-// ── Skeleton loader cards ────────────────────────────────────
+// ── Skeleton loaders ──────────────────────────────────────────
 function renderSkeletons(count = 6) {
   return Array.from({ length: count }).map(() => `
     <div class="product-card-skeleton">
