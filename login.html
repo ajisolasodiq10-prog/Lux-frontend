@@ -4,42 +4,54 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-    <title>LuxStore — Shop</title>
+    <title>LuxStore — Sign In</title>
     <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/navbar.css" />
-    <link rel="stylesheet" href="/css/products.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
   </head>
 
-  <body>
+  <body class="auth-page">
 
-    <!-- ── Hero Banner ── -->
-    <div class="hero-banner">
-      <h1>Everything<br />You Need 🛍️</h1>
-      <p>Quality products delivered fast to your door.</p>
-      <button class="btn" onclick="document.getElementById('search-input').focus()">
-        Search Now
-      </button>
+    <!-- Header -->
+    <div class="auth-header">
+      <div class="auth-logo">Lux<span>Store</span></div>
+      <p class="auth-tagline">Your favourite store, always open</p>
     </div>
 
-    <!-- ── Categories ── -->
-    <div class="categories-section">
-      <div class="categories-scroll" id="categories-scroll"></div>
+    <!-- Form Body -->
+    <div class="auth-body">
+      <h1 class="auth-title">Welcome back 👋</h1>
+      <p class="auth-subtitle">Sign in to your account to continue</p>
+
+      <div id="login-alert" class="alert"></div>
+
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" autocomplete="email"
+            required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Your password"
+            autocomplete="current-password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="login-btn">
+          Sign In
+        </button>
+      </form>
     </div>
 
-    <!-- ── Products ── -->
-    <div class="products-section">
-      <div class="section-header">
-        <h2>Products</h2>
-      </div>
-      <p class="search-results-header" id="search-results-header" style="display:none"></p>
-      <div class="products-grid" id="products-grid"></div>
+    <!-- Footer -->
+    <div class="auth-footer">
+      Don't have an account? <a href="/register.html">Create one</a>
     </div>
 
-    <!-- Scripts — order matters -->
     <script src="/js/auth.js"></script>
     <script src="/js/api.js"></script>
     <script src="/js/navbar.js"></script>
-    <script src="/js/products.js"></script>
+    <script src="/js/login.js"></script>
   </body>
 
 </html>
