@@ -109,7 +109,6 @@ function openAddModal() {
   editingProductId = null;
   document.getElementById("product-modal-title").textContent = "Add Product";
   document.getElementById("product-form").reset();
-  document.getElementById("p-image-preview").style.display = "none";
   document.getElementById("product-modal").classList.add("open");
 }
 
@@ -127,26 +126,9 @@ async function openEditModal(productId) {
   document.getElementById("p-price").value       = product.price;
   document.getElementById("p-stock").value       = product.stock;
   document.getElementById("p-category").value    = product.category;
-  document.getElementById("p-image").value       = "";
-
-  const previewEl = document.getElementById("p-image-preview");
-  if (product.image) {
-    previewEl.src = product.image;
-    previewEl.style.display = "block";
-  } else {
-    previewEl.style.display = "none";
-  }
+  document.getElementById("p-image").value       = product.image || "";
 
   document.getElementById("product-modal").classList.add("open");
-}
-
-function readFileAsDataURL(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
-    reader.readAsDataURL(file);
-  });
 }
 
 function closeProductModal() {
@@ -164,22 +146,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target === e.currentTarget) closeProductModal();
   });
 
-  // Image preview on file select
-  document.getElementById("p-image")?.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    const previewEl = document.getElementById("p-image-preview");
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        previewEl.src = reader.result;
-        previewEl.style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    } else {
-      previewEl.style.display = "none";
-    }
-  });
-
   // Save product
   document.getElementById("save-product-btn")?.addEventListener("click", saveProduct);
 });
@@ -190,8 +156,7 @@ async function saveProduct() {
   const price       = parseFloat(document.getElementById("p-price").value);
   const stock       = parseInt(document.getElementById("p-stock").value);
   const category    = document.getElementById("p-category").value.trim();
-  const imageInput  = document.getElementById("p-image");
-  const imageFile   = imageInput.files[0];
+  const image       = document.getElementById("p-image").value.trim();
 
   const alertEl = document.getElementById("product-form-alert");
 
@@ -207,13 +172,7 @@ async function saveProduct() {
   saveBtn.disabled    = true;
   saveBtn.textContent = "Saving…";
 
-  let image;
-  if (imageFile) {
-    image = await readFileAsDataURL(imageFile);
-  }
-
-  const data = { name, description, price, stock: stock || 0, category };
-  if (image !== undefined) data.image = image;
+  const data = { name, description, price, stock: stock || 0, category, image };
 
   const res = editingProductId
     ? await api.updateProduct(editingProductId, data)
