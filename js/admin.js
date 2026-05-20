@@ -109,6 +109,7 @@ function openAddModal() {
   editingProductId = null;
   document.getElementById("product-modal-title").textContent = "Add Product";
   document.getElementById("product-form").reset();
+  document.getElementById("p-image-preview").style.display = "none";
   document.getElementById("product-modal").classList.add("open");
 }
 
@@ -127,6 +128,14 @@ async function openEditModal(productId) {
   document.getElementById("p-stock").value       = product.stock;
   document.getElementById("p-category").value    = product.category;
   document.getElementById("p-image").value       = "";
+
+  const previewEl = document.getElementById("p-image-preview");
+  if (product.image) {
+    previewEl.src = product.image;
+    previewEl.style.display = "block";
+  } else {
+    previewEl.style.display = "none";
+  }
 
   document.getElementById("product-modal").classList.add("open");
 }
@@ -153,6 +162,22 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("close-product-modal")?.addEventListener("click", closeProductModal);
   document.getElementById("product-modal")?.addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeProductModal();
+  });
+
+  // Image preview on file select
+  document.getElementById("p-image")?.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    const previewEl = document.getElementById("p-image-preview");
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        previewEl.src = reader.result;
+        previewEl.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    } else {
+      previewEl.style.display = "none";
+    }
   });
 
   // Save product
