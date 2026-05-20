@@ -8,6 +8,10 @@ if (auth.isLoggedIn()) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.navbar && typeof navbar.render === "function") {
+    navbar.render();
+  }
+
   const form      = document.getElementById("register-form");
   const alertEl   = document.getElementById("register-alert");
   const submitBtn = document.getElementById("register-btn");

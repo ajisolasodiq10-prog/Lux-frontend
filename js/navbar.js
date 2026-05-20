@@ -8,7 +8,7 @@ const navbar = {
 
   // ── Top Navbar ─────────────────────────────────────────────
   renderTop(options = {}) {
-    const { showSearch = false, title = "" } = options;
+    const { title = "" } = options;
 
     // Left side — logo or back button
     let leftSide = `<a href="/index.html" class="top-nav-logo">Lux<span>Store</span></a>`;
@@ -28,6 +28,7 @@ const navbar = {
           🛒
           <span class="nav-cart-badge" id="top-cart-badge" style="display:none">0</span>
         </a>
+        <button type="button" class="btn btn-sm btn-outline" id="top-logout-btn" style="width:auto;margin-left:6px">Logout</button>
       `;
       // Admin icon only for admin/superadmin
       if (auth.isAdmin()) {
@@ -36,32 +37,28 @@ const navbar = {
     } else {
       // Not logged in — show Login and Register
       rightSide = `
-        <a href="/login.html" class="btn btn-sm btn-outline" style="width:auto">Login</a>
-        <a href="/register.html" class="btn btn-sm btn-primary" style="width:auto;margin-left:6px">Register</a>
+        <a href="login.html" class="btn btn-sm btn-outline" style="width:auto">Login</a>
+        <a href="register.html" class="btn btn-sm btn-primary" style="width:auto;margin-left:6px">Register</a>
       `;
     }
 
-    // Search bar (only on index page)
-    const searchBar = showSearch ? `
-      <div class="top-nav-search" id="top-search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="search-input" placeholder="Search products..." autocomplete="off" />
-      </div>
-    ` : "";
-
     const nav = document.createElement("nav");
     nav.className = "top-nav";
-
-    if (showSearch) {
-      nav.innerHTML = `${leftSide}${searchBar}<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">${rightSide}</div>`;
-    } else {
-      nav.innerHTML = `${leftSide}<div style="display:flex;align-items:center;gap:6px;">${rightSide}</div>`;
-    }
+    nav.innerHTML = `${leftSide}<div class="top-nav-actions">${rightSide}</div>`;
 
     document.body.insertBefore(nav, document.body.firstChild);
 
     // Update cart badge after nav is injected
-    if (auth.isLoggedIn()) this.updateCartBadge();
+    if (auth.isLoggedIn()) {
+      this.updateCartBadge();
+      const logoutBtn = document.getElementById("top-logout-btn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          auth.clearAuth();
+          window.location.href = "login.html";
+        });
+      }
+    }
   },
 
   // ── Bottom Navbar ───────────────────────────────────────────

@@ -7,9 +7,8 @@
     display: flex;
     flex-direction: column;
     padding: 0;
-    /* Override body padding for auth pages */
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    padding-top: var(--top-nav-height);
+    padding-bottom: var(--bottom-nav-height);
 }
 
 /* ── Auth Header ────────────────────────────── */

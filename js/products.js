@@ -20,7 +20,7 @@ let activeCategory = "All";
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", async () => {
   // Render navbar — products page does NOT require login
-  navbar.render({ showSearch: true });
+  navbar.render();
   renderCategories();
   await loadProducts();
   initSearch();
