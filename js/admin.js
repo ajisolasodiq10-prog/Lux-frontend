@@ -126,9 +126,18 @@ async function openEditModal(productId) {
   document.getElementById("p-price").value       = product.price;
   document.getElementById("p-stock").value       = product.stock;
   document.getElementById("p-category").value    = product.category;
-  document.getElementById("p-image").value       = product.image || "";
+  document.getElementById("p-image").value       = "";
 
   document.getElementById("product-modal").classList.add("open");
+}
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
 }
 
 function closeProductModal() {
@@ -156,7 +165,8 @@ async function saveProduct() {
   const price       = parseFloat(document.getElementById("p-price").value);
   const stock       = parseInt(document.getElementById("p-stock").value);
   const category    = document.getElementById("p-category").value.trim();
-  const image       = document.getElementById("p-image").value.trim();
+  const imageInput  = document.getElementById("p-image");
+  const imageFile   = imageInput.files[0];
 
   const alertEl = document.getElementById("product-form-alert");
 
@@ -172,7 +182,13 @@ async function saveProduct() {
   saveBtn.disabled    = true;
   saveBtn.textContent = "Saving…";
 
-  const data = { name, description, price, stock: stock || 0, category, image };
+  let image;
+  if (imageFile) {
+    image = await readFileAsDataURL(imageFile);
+  }
+
+  const data = { name, description, price, stock: stock || 0, category };
+  if (image !== undefined) data.image = image;
 
   const res = editingProductId
     ? await api.updateProduct(editingProductId, data)

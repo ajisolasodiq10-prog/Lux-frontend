@@ -118,6 +118,25 @@ const navbar = {
     }
   },
 
+  // ── Sync top nav height for page spacing ─────────────────────
+  syncTopNavOffset(nav) {
+    if (!nav) return;
+    const height = nav.offsetHeight;
+    if (height) {
+      document.documentElement.style.setProperty("--top-nav-offset", `${height}px`);
+    }
+
+    if (!this._resizeListenerInstalled) {
+      window.addEventListener("resize", () => {
+        const topNav = document.querySelector(".top-nav");
+        if (topNav) {
+          document.documentElement.style.setProperty("--top-nav-offset", `${topNav.offsetHeight}px`);
+        }
+      });
+      this._resizeListenerInstalled = true;
+    }
+  },
+
   // ── Cart Badge ──────────────────────────────────────────────
   async updateCartBadge() {
     if (!auth.isLoggedIn()) return;

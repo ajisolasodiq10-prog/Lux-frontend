@@ -63,7 +63,7 @@ body {
     font-size: var(--font-size-base);
     overflow-x: hidden;
     /* Space for fixed top and bottom navbars */
-    padding-top: var(--top-nav-height);
+    padding-top: var(--top-nav-offset, var(--top-nav-height));
     padding-bottom: var(--bottom-nav-height);
 }
 a { color: inherit; text-decoration: none; }
