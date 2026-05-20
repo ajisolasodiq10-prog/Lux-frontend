@@ -74,13 +74,14 @@ async function loadProducts() {
   tbody.innerHTML = products.map(p => {
     // Admin can only edit/delete their own products. Superadmin can edit all.
     const canManage = auth.isSuperAdmin() || p.createdBy?._id === user?.id;
+    const imageUrl = p.image || "https://placehold.co/40x40?text=?";
 
     return `
       <tr>
         <td>
           <img
             class="admin-table-img"
-            src="${escHtml(p.image)}"
+            src="${escHtml(imageUrl)}"
             alt="${escHtml(p.name)}"
             onerror="this.src='https://placehold.co/40x40?text=?'"
           />

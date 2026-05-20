@@ -133,13 +133,15 @@ function buildProductCard(product) {
 
   const stockText  = product.stock === 0 ? "Out of stock" : lowStock ? `Only ${product.stock} left` : `${product.stock} in stock`;
   const stockClass = product.stock === 0 ? "out" : lowStock ? "low" : "";
+  
+  const imageUrl = product.image || "https://placehold.co/400x400?text=No+Image";
 
   return `
     <div class="product-card">
       <div class="product-card-img-wrap">
         <img
           class="product-card-img"
-          src="${escHtml(product.image)}"
+          src="${escHtml(imageUrl)}"
           alt="${escHtml(product.name)}"
           loading="lazy"
           onerror="this.src='https://placehold.co/400x400?text=No+Image'"
