@@ -24,14 +24,14 @@ const navbar = {
     if (auth.isLoggedIn()) {
       // Cart icon always shown when logged in
       rightSide = `
-        <a href="/cart.html" class="top-nav-icon-btn" id="top-cart-btn" title="Cart">
+        <a href="cart.html" class="top-nav-icon-btn" id="top-cart-btn" title="Cart">
           🛒
           <span class="nav-cart-badge" id="top-cart-badge" style="display:none">0</span>
         </a>
       `;
       // Admin icon only for admin/superadmin
       if (auth.isAdmin()) {
-        rightSide += `<a href="/admin.html" class="top-nav-icon-btn" title="Admin Panel">⚙️</a>`;
+        rightSide += `<a href="admin.html" class="top-nav-icon-btn" title="Admin Panel">⚙️</a>`;
       }
     } else {
       // Not logged in — show Login and Register

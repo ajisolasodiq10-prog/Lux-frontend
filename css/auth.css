@@ -65,3 +65,48 @@
     color: var(--secondary-color);
     font-weight: 700;
 }
+
+/* ── Mobile / responsive fixes ───────────────────── */
+.auth-page {
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.auth-body {
+    border-top-left-radius: 28px;
+    border-top-right-radius: 28px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 640px) {
+    .auth-header {
+        padding: 32px 18px 24px;
+        border-radius: 0 0 28px 28px;
+    }
+
+    .auth-logo {
+        font-size: 28px;
+    }
+
+    .auth-tagline,
+    .auth-subtitle {
+        font-size: 14px;
+    }
+
+    .auth-body {
+        padding: 24px 18px;
+    }
+
+    .auth-title {
+        font-size: 22px;
+    }
+
+    .form-control {
+        padding: 14px 16px;
+    }
+
+    .btn {
+        padding: 14px 16px;
+    }
+}
