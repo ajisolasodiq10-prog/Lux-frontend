@@ -63,7 +63,7 @@ async function loadProducts() {
     return;
   }
 
-  const products = res.data.products || [];
+  const products = res.data.products || (res.data.product ? [res.data.product] : []);
   const user     = auth.getUser();
 
   if (products.length === 0) {

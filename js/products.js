@@ -46,7 +46,7 @@ async function loadProducts() {
     return;
   }
 
-  allProducts = res.data.products || [];
+  allProducts = res.data.products || (res.data.product ? [res.data.product] : []);
   renderProducts(allProducts);
 }
 
@@ -233,7 +233,7 @@ function initSearch() {
       return;
     }
 
-    const products = res.data.products || [];
+    const products = res.data.products || (res.data.product ? [res.data.product] : []);
     if (header) {
       header.style.display = "block";
       header.innerHTML = `<strong>${products.length}</strong> result${products.length !== 1 ? "s" : ""} for "<strong>${escHtml(term)}</strong>"`;
