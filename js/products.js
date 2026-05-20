@@ -144,6 +144,7 @@ function buildProductCard(product) {
           src="${escHtml(imageUrl)}"
           alt="${escHtml(product.name)}"
           loading="lazy"
+          onload="this.classList.add('loaded')"
           onerror="this.src='https://placehold.co/400x400?text=No+Image'"
         />
         <span class="product-category-tag">${escHtml(product.category)}</span>
