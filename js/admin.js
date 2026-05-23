@@ -127,7 +127,8 @@ async function openEditModal(productId) {
   document.getElementById("p-price").value       = product.price;
   document.getElementById("p-stock").value       = product.stock;
   document.getElementById("p-category").value    = product.category;
-  document.getElementById("p-image").value       = product.image || "";
+  document.getElementById("preview").src = product.image || "https://placehold.co/40x40?text=?";
+  // document.getElementById("p-image").value       = product.image || "";
 
   document.getElementById("product-modal").classList.add("open");
 }
