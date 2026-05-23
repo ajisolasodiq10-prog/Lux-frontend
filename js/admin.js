@@ -130,7 +130,7 @@ async function openEditModal(productId) {
   document.getElementById("preview").src = product.image || "https://placehold.co/40x40?text=?";
   // document.getElementById("p-image").value       = product.image || "";
 
-  document.getElementById("product-modal").classList.add("open");
+  document.getElementById("product-modal").classList.remove("open");
 }
 
 function closeProductModal() {
